@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 namespace CharacterControllig
 {
@@ -18,6 +17,8 @@ namespace CharacterControllig
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
         private float RotationSmoothTime = 0.12f;
+
+        private float aimRotationSmoothTime = 0.02f;
 
 
         private Vector2 PlayerMove => playerMove.action.ReadValue<Vector2>();
@@ -44,7 +45,7 @@ namespace CharacterControllig
 
         private void Update()
         {
-            CharacterRotate();
+            //CharacterRotate();
         }
 
         private void FixedUpdate()
@@ -73,6 +74,19 @@ namespace CharacterControllig
                 // rotate to face input direction relative to camera position
                 this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
+        }
+
+        public void TestRotate(Vector3 targetRotation)
+        {
+            _targetRotation = Mathf.Atan2(targetRotation.x, targetRotation.z) * Mathf.Rad2Deg;
+
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y,
+                                                   _targetRotation,
+                                                   ref _rotationVelocity,
+                                                   aimRotationSmoothTime);
+
+            // rotate to face input direction relative to camera position
+            this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
     }
 }
