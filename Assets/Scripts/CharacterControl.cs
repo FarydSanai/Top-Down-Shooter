@@ -7,8 +7,7 @@ namespace CharacterControllig
 {
     public class CharacterControl : MonoBehaviour
     {
-        [SerializeField] private InputActionReference playerMove;
-
+        [SerializeField] private PlayerInputReferences playerInput;
 
         [Header("Movement options")]
         [SerializeField] private float movementSpeed;
@@ -17,35 +16,32 @@ namespace CharacterControllig
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
         private float RotationSmoothTime = 0.12f;
-
         private float aimRotationSmoothTime = 0.02f;
-
-
-        private Vector2 PlayerMove => playerMove.action.ReadValue<Vector2>();
-
 
         [Header("Character components")]
         private Rigidbody rigidBody;
         private CharacterStateController characterStateController;
+        private CursorController cursorController;
 
         private void Awake()
         {
             rigidBody = this.GetComponent<Rigidbody>();
             characterStateController = new CharacterStateController(this.GetComponent<Animator>());
+            cursorController = new CursorController(playerInput, Camera.main);
         }
 
         private void OnEnable()
         {
-            playerMove.action.Enable();
+            playerInput.EnableActionReferences();
         }
         private void OnDisable()
         {
-            playerMove.action.Disable();
+            playerInput.DisableActionReferences();
         }
 
         private void Update()
         {
-            //CharacterRotate();
+            CharacterRotate();
         }
 
         private void FixedUpdate()
@@ -55,35 +51,35 @@ namespace CharacterControllig
 
         private void CharacterMove()
         {
-            rigidBody.velocity = new Vector3(PlayerMove.x, 0, PlayerMove.y) * movementSpeed;
+            rigidBody.velocity = new Vector3(playerInput.MoveDir.x, 0, playerInput.MoveDir.y)
+                                        * movementSpeed;
 
-            characterStateController.UpdateState(CharacterState.Move, PlayerMove != Vector2.zero);
+            characterStateController.UpdateState(CharacterState.Move, playerInput.IsMove);
         }
 
         private void CharacterRotate()
         {
-            if (PlayerMove != Vector2.zero)
+            if (playerInput.IsMove)
             {
-                _targetRotation = Mathf.Atan2(PlayerMove.x, PlayerMove.y) * Mathf.Rad2Deg;
+                if (playerInput.IsShoot)
+                {
+                    Vector3 dir = cursorController.GetCursorPosition() - this.transform.position;
+                    CharacterRotate(new Vector2(dir.x, dir.z), aimRotationSmoothTime);
+                    return;
+                }
 
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y,
-                                                       _targetRotation,
-                                                       ref _rotationVelocity,
-                                                       RotationSmoothTime);
-
-                // rotate to face input direction relative to camera position
-                this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                CharacterRotate(new Vector2(playerInput.MoveDir.x, playerInput.MoveDir.y), RotationSmoothTime);
             }
         }
 
-        public void TestRotate(Vector3 targetRotation)
+        private void CharacterRotate(Vector2 direction, float rotationSmoothTime)
         {
-            _targetRotation = Mathf.Atan2(targetRotation.x, targetRotation.z) * Mathf.Rad2Deg;
+            _targetRotation = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
 
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y,
+            float rotation = Mathf.SmoothDampAngle(this.transform.eulerAngles.y,
                                                    _targetRotation,
                                                    ref _rotationVelocity,
-                                                   aimRotationSmoothTime);
+                                                   rotationSmoothTime);
 
             // rotate to face input direction relative to camera position
             this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
