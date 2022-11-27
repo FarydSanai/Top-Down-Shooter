@@ -7,6 +7,9 @@ namespace CharacterControllig
 {
     public class CharacterControl : MonoBehaviour
     {
+        private const float rotationSmoothTime = 0.12f;
+        private const float shootRotationSmoothTime = 0.02f;
+
         [SerializeField] private PlayerInputReferences playerInput;
 
         [Header("Movement options")]
@@ -15,19 +18,21 @@ namespace CharacterControllig
 
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
-        private float RotationSmoothTime = 0.12f;
-        private float aimRotationSmoothTime = 0.02f;
+
 
         [Header("Character components")]
         private Rigidbody rigidBody;
         private CharacterStateController characterStateController;
         private CursorController cursorController;
+        private ShootController shootController;
 
         private void Awake()
         {
             rigidBody = this.GetComponent<Rigidbody>();
             characterStateController = new CharacterStateController(this.GetComponent<Animator>());
             cursorController = new CursorController(playerInput, Camera.main);
+            shootController = this.GetComponentInChildren<ShootController>();
+            shootController.Init(cursorController, this.transform);
         }
 
         private void OnEnable()
@@ -59,17 +64,20 @@ namespace CharacterControllig
 
         private void CharacterRotate()
         {
+            if ((playerInput.IsMove && playerInput.IsShoot) || playerInput.IsShoot)
+            {
+                Vector3 dir = cursorController.GetCursorPosition() - this.transform.position;
+                CharacterRotate(new Vector2(dir.x, dir.z), shootRotationSmoothTime);
+
+                shootController.Shoot();
+
+                return;
+            }
             if (playerInput.IsMove)
             {
-                if (playerInput.IsShoot)
-                {
-                    Vector3 dir = cursorController.GetCursorPosition() - this.transform.position;
-                    CharacterRotate(new Vector2(dir.x, dir.z), aimRotationSmoothTime);
-                    return;
-                }
-
-                CharacterRotate(new Vector2(playerInput.MoveDir.x, playerInput.MoveDir.y), RotationSmoothTime);
+                CharacterRotate(new Vector2(playerInput.MoveDir.x, playerInput.MoveDir.y), rotationSmoothTime);
             }
+
         }
 
         private void CharacterRotate(Vector2 direction, float rotationSmoothTime)
