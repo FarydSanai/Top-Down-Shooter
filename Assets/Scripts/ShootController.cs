@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TopDownShooter;
+using Random = UnityEngine.Random;
 
 namespace CharacterControllig
 {
@@ -26,8 +27,12 @@ namespace CharacterControllig
         {
             if (Time.time >= fixedTimeMoment + shootDelay)
             {
-                //Vector3 shootDir = (cursorController.GetCursorPosition() - projectileSpawnPoint.position).normalized;
-                Instantiate(currentProjectilePrefab, projectileSpawnPoint.position, Quaternion.LookRotation(characterTransform.forward, Vector3.up));
+                Instantiate(currentProjectilePrefab,
+                            projectileSpawnPoint.position,
+                            Quaternion.LookRotation(characterTransform.forward +
+                                                    new Vector3(Random.Range(-0.05f, 0.04f),
+                                                    Random.Range(-0.05f, 0.04f), 0f),
+                                                    Vector3.up));
 
                 fixedTimeMoment = Time.time;
             }
