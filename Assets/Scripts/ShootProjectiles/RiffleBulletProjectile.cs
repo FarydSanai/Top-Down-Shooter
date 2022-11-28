@@ -7,6 +7,7 @@ namespace TopDownShooter
     public class RiffleBulletProjectile : MonoBehaviour
     {
         [SerializeField] private float startSpeed = 100f;
+        [SerializeField] private GameObject projectileDecal;
         //[SerializeField] private LayerMask layerMask;
 
         private Rigidbody rigidBody;
@@ -33,7 +34,11 @@ namespace TopDownShooter
         {
             if (collision.gameObject.layer != this.gameObject.layer)
             {
-                Debug.Log("Destroy");
+                //Debug.Log("Destroy");
+
+                Vector3 hitPos = collision.contacts[0].point;
+
+                Instantiate(projectileDecal, hitPos, this.transform.rotation);
                 Destroy(this.gameObject);
             }
         }
