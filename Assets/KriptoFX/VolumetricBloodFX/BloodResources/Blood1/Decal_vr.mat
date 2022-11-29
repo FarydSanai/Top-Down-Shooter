@@ -128,7 +128,7 @@ Material:
     - _SunPos: {r: 0.2, g: 1.78, b: -0.1, a: 0}
     - _TintColor: {r: 0.3529412, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &1359285087082792605
+--- !u!114 &484247259079904207
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
