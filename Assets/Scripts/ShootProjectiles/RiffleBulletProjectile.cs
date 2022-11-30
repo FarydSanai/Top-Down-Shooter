@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TopDownShooter
 {
     public class RiffleBulletProjectile : MonoBehaviour
     {
+        public event Action onHit;
+
         [SerializeField] private float startSpeed = 100f;
 
         [SerializeField] private GameObject projectileDecal;
@@ -21,9 +25,13 @@ namespace TopDownShooter
             rigidBody = this.GetComponent<Rigidbody>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
             rigidBody.velocity = this.transform.forward * startSpeed;
+        }
+        private void OnDisable()
+        {
+            rigidBody.velocity = Vector3.zero;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -54,7 +62,9 @@ namespace TopDownShooter
                     Instantiate(projectileDecal, hitPos, this.transform.rotation);
                 }
 
-                Destroy(this.gameObject);
+                //Destroy(this.gameObject);
+
+                onHit.Invoke();
             }
         }
 

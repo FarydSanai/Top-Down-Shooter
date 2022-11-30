@@ -46,7 +46,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.05, y: 0.05, z: 0.25}
+  m_Size: {x: 0.02, y: 0.02, z: 0.12}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5892440710405517974
 Rigidbody:
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3435283ac8b32445a8dff0887eaebf72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSpeed: 25
+  startSpeed: 18
   projectileDecal: {fileID: 6982953258465469836, guid: ec1adc630c8364db5b3a6bd71e34ee4d,
     type: 3}
   playerLM:
@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 8503252703497649232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.02, y: 0.02, z: 0.2}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5966822932617394746}
