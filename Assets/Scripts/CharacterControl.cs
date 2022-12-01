@@ -16,6 +16,7 @@ namespace CharacterControllig
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
 
+        [Header("Rotation options")]
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
 
@@ -67,9 +68,13 @@ namespace CharacterControllig
             if ((playerInput.IsMove && playerInput.IsShoot) || playerInput.IsShoot)
             {
                 Vector3 dir = cursorController.GetCursorPosition() - this.transform.position;
+
                 CharacterRotate(new Vector2(dir.x, dir.z), shootRotationSmoothTime);
 
-                shootController.Shoot();
+                if (Mathf.Abs(this.transform.eulerAngles.y - SetAngleTo360(_targetRotation)) < 3f)
+                {
+                    shootController.Shoot();
+                }
 
                 return;
             }
@@ -91,6 +96,16 @@ namespace CharacterControllig
 
             // rotate to face input direction relative to camera position
             this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+        }
+
+        //private float GetAngleZX(Vector3 first, Vector3 second)
+        //{
+        //    return Mathf.Atan2(second.x - first.x, second.z - first.z) * Mathf.Rad2Deg;
+        //}
+
+        private float SetAngleTo360(float angle)
+        {
+            return angle < 0 ? angle + 360 : angle;
         }
     }
 }
