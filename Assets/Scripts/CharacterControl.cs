@@ -9,6 +9,7 @@ namespace CharacterControllig
     {
         private const float rotationSmoothTime = 0.12f;
         private const float shootRotationSmoothTime = 0.02f;
+        private const float rotationApprox = 3.0f;
 
         [SerializeField] private PlayerInputReferences playerInput;
 
@@ -19,7 +20,6 @@ namespace CharacterControllig
         [Header("Rotation options")]
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
-
 
         [Header("Character components")]
         private Rigidbody rigidBody;
@@ -68,14 +68,12 @@ namespace CharacterControllig
             if ((playerInput.IsMove && playerInput.IsShoot) || playerInput.IsShoot)
             {
                 Vector3 dir = cursorController.GetCursorPosition() - this.transform.position;
-
                 CharacterRotate(new Vector2(dir.x, dir.z), shootRotationSmoothTime);
 
-                if (Mathf.Abs(this.transform.eulerAngles.y - SetAngleTo360(_targetRotation)) < 3f)
+                if (RotationComplete())
                 {
                     shootController.Shoot();
                 }
-
                 return;
             }
             if (playerInput.IsMove)
@@ -102,6 +100,11 @@ namespace CharacterControllig
         //{
         //    return Mathf.Atan2(second.x - first.x, second.z - first.z) * Mathf.Rad2Deg;
         //}
+
+        private bool RotationComplete()
+        {
+            return Mathf.Abs(this.transform.eulerAngles.y - SetAngleTo360(_targetRotation)) < rotationApprox;
+        }
 
         private float SetAngleTo360(float angle)
         {
