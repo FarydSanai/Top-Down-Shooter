@@ -9,14 +9,15 @@ namespace CharacterControllig
 {
     public class ShootController : MonoBehaviour
     {
+        private const float shootDelay = 0.12f;
+
         [SerializeField] private GameObject currentProjectilePrefab;
         [SerializeField] private Transform projectileSpawnPoint;
 
         private CursorController cursorController;
         private Transform characterTransform;
 
-        private float shootDelay = 0.12f;
-        private float fixedTimeMoment;
+        private float lastFixedTime;
 
         public void Init(CursorController cursorController, Transform characterTransform)
         {
@@ -26,25 +27,32 @@ namespace CharacterControllig
 
         public void Shoot()
         {
-            if (Time.time >= fixedTimeMoment + shootDelay)
+            if (Time.time >= lastFixedTime + shootDelay)
             {
                 RiffleBulletProjectile projectile = PoolSystem.Instance.riffleBulletPool.Get();
-                projectile.onSpawn += () => SetProjectileTransform(projectile.gameObject);
+                
+                projectile.SetStartPosition(projectileSpawnPoint.position, SetProjectileRotation());
+                projectile.Shoot();
 
-                fixedTimeMoment = Time.time;
+                lastFixedTime = Time.time;
             }
         }
 
-        private void SetProjectileTransform(GameObject projectile)
+        private Quaternion SetProjectileRotation()
         {
             float offsetX = Random.Range(-0.05f, 0.04f);
             float offsetY = Random.Range(-0.05f, 0.04f);
-
-            projectile.transform.SetPositionAndRotation(projectileSpawnPoint.position,
-                                                        Quaternion.LookRotation(characterTransform.forward +
-                                                                                new Vector3(offsetX, offsetY),
-                                                                                Vector3.up));
-            Debug.Log("Set");
+            return Quaternion.LookRotation(characterTransform.forward + new Vector3(offsetX, offsetY), Vector3.up);
         }
+
+        //private void SetProjectileTransform(GameObject projectile)
+        //{
+        //    float offsetX = Random.Range(-0.05f, 0.04f);
+        //    float offsetY = Random.Range(-0.05f, 0.04f);
+
+        //    projectile.transform.SetPositionAndRotation(projectileSpawnPoint.position,
+        //                                                Quaternion.LookRotation(characterTransform.forward +
+        //                                                                        new Vector3(offsetX, offsetY),                                                                    Vector3.up));
+        //}
     }
 }
