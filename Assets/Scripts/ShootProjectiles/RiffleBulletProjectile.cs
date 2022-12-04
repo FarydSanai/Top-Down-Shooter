@@ -12,12 +12,7 @@ namespace TopDownShooter
         public event Action onHit;
 
         [SerializeField] private float startSpeed = 50f;
-
-        [SerializeField] private GameObject projectileDecal;
-
         [SerializeField] private LayerMask playerLM;
-        [SerializeField] private  List<GameObject> bloodPrefabs;
-
         private Rigidbody rigidBody;
 
         private void Awake()
@@ -40,25 +35,12 @@ namespace TopDownShooter
                 {
                     Debug.Log("Shoot enemy");
 
-                    float angle = Mathf.Atan2(hitPos.x, hitPos.z) * Mathf.Rad2Deg + 180f;
-
-                    //var instance = Instantiate(bloodPrefabs[Random.Range(0, bloodPrefabs.Count - 1)], hitPos, Quaternion.Euler(0, angle + 90f, 0));
-
-                    //BFX_BloodSettings bloodSettings = instance.GetComponent<BFX_BloodSettings>();
-
-                    //bloodSettings.GroundHeight = 0f;
-                    //bloodSettings.DecalRenderinMode = BFX_BloodSettings._DecalRenderinMode.AverageRayBetwenForwardAndFloor;
-
-                    //Destroy(instance, 4f);
-
-                    BFX_BloodSettings bloodFX = PoolSystem.Instance.bloodPool.Get();
-                    bloodFX.transform.position = hitPos;
-                    bloodFX.transform.rotation = Quaternion.Euler(0, angle + 90f, 0);
-
+                    BFX_BloodSettings bloodFX = PoolSystem.Instance.BloodFXPool.Get();
+                    SetBloodFXTransform(bloodFX.transform, hitPos);
                 }
                 else
                 {
-                    GameObject bulletDecal = PoolSystem.Instance.bulletDecalPool.Get();
+                    GameObject bulletDecal = PoolSystem.Instance.BulletDecalPool.Get();
                     bulletDecal.transform.SetPositionAndRotation(hitPos, collision.transform.rotation);
                 }
 
@@ -85,9 +67,11 @@ namespace TopDownShooter
             this.transform.SetPositionAndRotation(position, rotation);
         }
 
-        private void SetBloodFXTransform(Vector3 hitPosition)
+        private void SetBloodFXTransform(Transform bloogFX, Vector3 hitPosition)
         {
             float angle = Mathf.Atan2(hitPosition.x, hitPosition.z) * Mathf.Rad2Deg + 180f;
+
+            bloogFX.SetPositionAndRotation(hitPosition, Quaternion.Euler(0, angle + 90f, 0));
         }
     }
 }

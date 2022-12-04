@@ -81,7 +81,6 @@ public class BFX_ShaderProperies : MonoBehaviour {
         {
             canUpdate = false;
             OnAnimationFinished?.Invoke();
-
         }
 
         var mat = rend.sharedMaterial;

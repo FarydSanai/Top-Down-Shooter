@@ -29,7 +29,7 @@ namespace CharacterControllig
         {
             if (Time.time >= lastFixedTime + shootDelay)
             {
-                RiffleBulletProjectile projectile = PoolSystem.Instance.riffleBulletPool.Get();
+                RiffleBulletProjectile projectile = PoolSystem.Instance.RiffleBulletPool.Get();
                 
                 projectile.SetStartPosition(projectileSpawnPoint.position, SetProjectileRotation());
                 projectile.Shoot();

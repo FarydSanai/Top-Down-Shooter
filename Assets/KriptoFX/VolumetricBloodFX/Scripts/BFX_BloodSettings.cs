@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TopDownShooter;
 
 public class BFX_BloodSettings : MonoBehaviour
 {
@@ -12,9 +13,22 @@ public class BFX_BloodSettings : MonoBehaviour
     public _DecalRenderinMode DecalRenderinMode = _DecalRenderinMode.Floor_XZ;
     public bool ClampDecalSideSurface = false;
 
+    private const float DestroyDelay = 13.5f;
+
     public enum _DecalRenderinMode
     {
         Floor_XZ,
         AverageRayBetwenForwardAndFloor
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(DestroyFXRoutine());
+    }
+
+    private IEnumerator DestroyFXRoutine()
+    {
+        yield return new WaitForSeconds(DestroyDelay);
+        PoolSystem.Instance.BloodFXPool.Release(this);
     }
 }

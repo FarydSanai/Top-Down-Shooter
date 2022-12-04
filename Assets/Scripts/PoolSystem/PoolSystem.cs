@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using static BFX_BloodSettings;
 using Random = UnityEngine.Random;
 
 namespace TopDownShooter
@@ -10,15 +11,16 @@ namespace TopDownShooter
     {
         public static PoolSystem Instance;
 
+        //Riffle Bullets pool
         [SerializeField] private RiffleBulletProjectile riffleBulletPrefab;
-        public IObjectPool<RiffleBulletProjectile> riffleBulletPool;
+        public IObjectPool<RiffleBulletProjectile> RiffleBulletPool;
 
         [SerializeField] private GameObject bulletDecalPrefab;
-        public IObjectPool<GameObject> bulletDecalPool;
+        public IObjectPool<GameObject> BulletDecalPool;
 
         [SerializeField] private BFX_BloodSettings[] bloodPrefabs;
         private int counter = 0;
-        public IObjectPool<BFX_BloodSettings> bloodPool;
+        public IObjectPool<BFX_BloodSettings> BloodFXPool;
 
         private void Awake()
         {
@@ -31,10 +33,10 @@ namespace TopDownShooter
 
         private void InitRiffleBulletPool()
         {
-            riffleBulletPool = new ObjectPool<RiffleBulletProjectile>(() =>
+            RiffleBulletPool = new ObjectPool<RiffleBulletProjectile>(() =>
             {
                 RiffleBulletProjectile projectile = Instantiate<RiffleBulletProjectile>(riffleBulletPrefab, Vector3.zero, Quaternion.identity);
-                projectile.onHit += () => riffleBulletPool.Release(projectile);
+                projectile.onHit += () => RiffleBulletPool.Release(projectile);
                 return projectile;
             },
             projectile =>
@@ -54,7 +56,7 @@ namespace TopDownShooter
 
         private void InitBulletDecalPool()
         {
-            bulletDecalPool = new ObjectPool<GameObject>(() =>
+            BulletDecalPool = new ObjectPool<GameObject>(() =>
             {
                 GameObject decal = Instantiate(bulletDecalPrefab, Vector3.zero, Quaternion.identity);
                 return decal;
@@ -76,14 +78,20 @@ namespace TopDownShooter
 
         private void InitBloodFXPools()
         {
-            bloodPool = new ObjectPool<BFX_BloodSettings>(() =>
+            BloodFXPool = new ObjectPool<BFX_BloodSettings>(() =>
             {
                 if (counter >= bloodPrefabs.Length - 1)
                 {
                     counter = 0;
                 }
+                
+                BFX_BloodSettings bfxSettings = Instantiate<BFX_BloodSettings>(bloodPrefabs[counter], Vector3.zero, Quaternion.identity);
+                bfxSettings.GroundHeight = 0.0f;
+                bfxSettings.DecalRenderinMode = BFX_BloodSettings._DecalRenderinMode.AverageRayBetwenForwardAndFloor;
+
                 counter++;
-                return Instantiate<BFX_BloodSettings>(bloodPrefabs[counter], Vector3.zero, Quaternion.identity);
+
+                return bfxSettings;
             },
             blood =>
             {
@@ -92,6 +100,7 @@ namespace TopDownShooter
             blood =>
             {
                 blood.gameObject.SetActive(false);
+                Debug.Log("destroyed");
             },
             blood =>
             {
