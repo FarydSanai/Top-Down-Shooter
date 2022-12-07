@@ -4,24 +4,23 @@ using UnityEngine;
 using UnityEngine.Pool;
 using TopDownShooter;
 using Random = UnityEngine.Random;
+using CharacterControlling.Interfaces;
 
-namespace CharacterControllig
+namespace CharacterControlling
 {
-    public class ShootController : MonoBehaviour
+    public class ShootController : MonoBehaviour, IShootController
     {
         private const float shootDelay = 0.12f;
+        private float lastFixedTime;
 
         [SerializeField] private GameObject currentProjectilePrefab;
         [SerializeField] private Transform projectileSpawnPoint;
 
-        private CursorController cursorController;
         private Transform characterTransform;
 
-        private float lastFixedTime;
 
-        public void Init(CursorController cursorController, Transform characterTransform)
+        public void Init(Transform characterTransform)
         {
-            this.cursorController = cursorController;
             this.characterTransform = characterTransform;
         }
 
@@ -44,15 +43,5 @@ namespace CharacterControllig
             float offsetY = Random.Range(-0.05f, 0.04f);
             return Quaternion.LookRotation(characterTransform.forward + new Vector3(offsetX, offsetY), Vector3.up);
         }
-
-        //private void SetProjectileTransform(GameObject projectile)
-        //{
-        //    float offsetX = Random.Range(-0.05f, 0.04f);
-        //    float offsetY = Random.Range(-0.05f, 0.04f);
-
-        //    projectile.transform.SetPositionAndRotation(projectileSpawnPoint.position,
-        //                                                Quaternion.LookRotation(characterTransform.forward +
-        //                                                                        new Vector3(offsetX, offsetY),                                                                    Vector3.up));
-        //}
     }
 }

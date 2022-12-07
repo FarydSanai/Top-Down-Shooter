@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CharacterControlling.Interfaces;
 
 
-namespace CharacterControllig
+namespace CharacterControlling
 {
     public enum CharacterState
     {
@@ -13,7 +14,7 @@ namespace CharacterControllig
         COUNT,
     }
 
-    public class CharacterStateController
+    public class CharacterStateController : ICharacterStateController
     {
         public Dictionary<CharacterState, bool> CurrentStates { get; private set; } = new();
         public int[] ArrTransitionParams = new int[(int)CharacterState.COUNT];

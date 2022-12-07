@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CharacterControlling.Interfaces;
 
-namespace CharacterControllig
+namespace CharacterControlling
 {
-    public class CursorController
+    public class CursorController : ICursorController
     {
         private PlayerInputReferences plyerInput;
         private Camera mainCamera;

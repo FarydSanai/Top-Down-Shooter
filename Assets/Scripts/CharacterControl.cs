@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CharacterControlling.Interfaces;
 
-namespace CharacterControllig
+namespace CharacterControlling
 {
     public class CharacterControl : MonoBehaviour
     {
@@ -23,9 +24,9 @@ namespace CharacterControllig
 
         [Header("Character components")]
         private Rigidbody rigidBody;
-        private CharacterStateController characterStateController;
-        private CursorController cursorController;
-        private ShootController shootController;
+        private ICharacterStateController characterStateController;
+        private ICursorController cursorController;
+        private IShootController shootController;
 
         private void Awake()
         {
@@ -33,7 +34,7 @@ namespace CharacterControllig
             characterStateController = new CharacterStateController(this.GetComponent<Animator>());
             cursorController = new CursorController(playerInput, Camera.main);
             shootController = this.GetComponentInChildren<ShootController>();
-            shootController.Init(cursorController, this.transform);
+            shootController.Init(this.transform);
         }
 
         private void OnEnable()
