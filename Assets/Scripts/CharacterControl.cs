@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Collections.Specialized;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using CharacterControlling.Interfaces;
+using TopDownShooter;
 
 namespace CharacterControlling
 {
@@ -93,7 +95,6 @@ namespace CharacterControlling
                                                    ref _rotationVelocity,
                                                    rotationSmoothTime);
 
-            // rotate to face input direction relative to camera position
             this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
 

@@ -15,9 +15,13 @@ namespace TopDownShooter
         [SerializeField] private RiffleBulletProjectile riffleBulletPrefab;
         public IObjectPool<RiffleBulletProjectile> RiffleBulletPool;
 
+
+        //Bullet decal pool
         [SerializeField] private GameObject bulletDecalPrefab;
         public IObjectPool<GameObject> BulletDecalPool;
 
+
+        //Blood VFX/Decals pool
         [SerializeField] private BFX_BloodSettings[] bloodPrefabs;
         private int counter = 0;
         public IObjectPool<BFX_BloodSettings> BloodFXPool;
@@ -51,7 +55,7 @@ namespace TopDownShooter
             {
                 Destroy(projectile.gameObject);
             },
-            false, 10, 50);
+            true, 10, 50);
         }
 
         private void InitBulletDecalPool()
@@ -100,13 +104,12 @@ namespace TopDownShooter
             blood =>
             {
                 blood.gameObject.SetActive(false);
-                Debug.Log("destroyed");
             },
             blood =>
             {
                 Destroy(blood);
             },
-            false, 20, 500);
+            false, 20, 50);
         }
     }
 }

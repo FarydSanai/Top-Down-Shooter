@@ -17,7 +17,7 @@ namespace CharacterControlling
         [SerializeField] private Transform projectileSpawnPoint;
 
         private Transform characterTransform;
-
+        private HitController hitController;
 
         public void Init(Transform characterTransform)
         {
@@ -29,11 +29,11 @@ namespace CharacterControlling
             if (Time.time >= lastFixedTime + shootDelay)
             {
                 RiffleBulletProjectile projectile = PoolSystem.Instance.RiffleBulletPool.Get();
-                
-                projectile.SetStartPosition(projectileSpawnPoint.position, SetProjectileRotation());
-                projectile.Shoot();
+                //Debug.Log(projectile.transform.position + " | " + projectileSpawnPoint.position);
 
-                lastFixedTime = Time.time;
+                projectile.Shoot(projectileSpawnPoint.position, SetProjectileRotation());
+
+                lastFixedTime = Time.time;               
             }
         }
 

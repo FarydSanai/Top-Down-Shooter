@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using CharacterControlling;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 namespace TopDownShooter
 {
     public class RiffleBulletProjectile : MonoBehaviour
     {
         public event Action onHit;
+        public event Action onHitPlayer;
 
         [SerializeField] private float startSpeed = 50f;
         [SerializeField] private LayerMask playerLM;
@@ -22,6 +25,7 @@ namespace TopDownShooter
 
         private void OnDisable()
         {
+            this.transform.position = Vector3.zero;
             rigidBody.velocity = Vector3.zero;
         }
 
@@ -37,6 +41,7 @@ namespace TopDownShooter
 
                     BFX_BloodSettings bloodFX = PoolSystem.Instance.BloodFXPool.Get();
                     SetBloodFXTransform(bloodFX.transform, hitPos);
+                    onHitPlayer?.Invoke();
                 }
                 else
                 {
@@ -50,21 +55,14 @@ namespace TopDownShooter
 
         private bool IsShootEnemy(Collision collision)
         {
-            if ((playerLM.value & (1 << collision.gameObject.layer)) > 0)
-            {
-                return true;
-            }
-            return false;
+            return Utilities.CompareLayers(playerLM.value, collision.gameObject.layer);
         }
 
-        public void Shoot()
+        public void Shoot(Vector3 startPoint, Quaternion startRotation)
         {
+            this.transform.SetPositionAndRotation(startPoint, startRotation);
+
             rigidBody.velocity = this.transform.forward * startSpeed;
-        }
-
-        public void SetStartPosition(Vector3 position, Quaternion rotation)
-        {
-            this.transform.SetPositionAndRotation(position, rotation);
         }
 
         private void SetBloodFXTransform(Transform bloogFX, Vector3 hitPosition)

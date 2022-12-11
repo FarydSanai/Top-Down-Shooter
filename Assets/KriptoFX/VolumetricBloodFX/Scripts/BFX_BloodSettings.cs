@@ -13,7 +13,7 @@ public class BFX_BloodSettings : MonoBehaviour
     public _DecalRenderinMode DecalRenderinMode = _DecalRenderinMode.Floor_XZ;
     public bool ClampDecalSideSurface = false;
 
-    private const float DestroyDelay = 13.5f;
+    private const float DestroyDelay = 14f;
 
     public enum _DecalRenderinMode
     {
