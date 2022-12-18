@@ -24,8 +24,7 @@ namespace TopDownShooter
                 shotCount++;
 
                 if (shotCount >= 3)
-                {
-                    
+                {                    
                     ragdollController.ToggleRagdoll(true);
                     Vector3 forceDir = ((this.transform.forward * -1) + this.transform.up);
                     ragdollController.AddRagdollForce(forceDir, 100f);

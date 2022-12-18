@@ -46,7 +46,7 @@ namespace TopDownShooter
                 else
                 {
                     GameObject bulletDecal = PoolSystem.Instance.BulletDecalPool.Get();
-                    bulletDecal.transform.SetPositionAndRotation(hitPos, collision.transform.rotation);
+                    bulletDecal.transform.SetPositionAndRotation(hitPos, this.transform.rotation);
                 }
 
                 onHit?.Invoke();

@@ -70,7 +70,7 @@ namespace CharacterControlling
         private void CharacterMove()
         {
             rigidBody.velocity = new Vector3(playerInput.MoveDir.x, 0, playerInput.MoveDir.y)
-                                        * movementSpeed;
+                        * movementSpeed;
 
             characterStateController.UpdateState(CharacterState.Move, playerInput.IsMove);
         }
@@ -106,11 +106,6 @@ namespace CharacterControlling
 
             this.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
-
-        //private float GetAngleZX(Vector3 first, Vector3 second)
-        //{
-        //    return Mathf.Atan2(second.x - first.x, second.z - first.z) * Mathf.Rad2Deg;
-        //}
 
         private bool RotationComplete()
         {

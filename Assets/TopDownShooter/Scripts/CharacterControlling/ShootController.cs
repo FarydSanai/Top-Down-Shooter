@@ -29,7 +29,6 @@ namespace TopDownShooter.CharacterControlling
             if (Time.time >= lastFixedTime + shootDelay)
             {
                 RiffleBulletProjectile projectile = PoolSystem.Instance.RiffleBulletPool.Get();
-                //Debug.Log(projectile.transform.position + " | " + projectileSpawnPoint.position);
 
                 projectile.Shoot(projectileSpawnPoint.position, SetProjectileRotation());
 
@@ -39,8 +38,9 @@ namespace TopDownShooter.CharacterControlling
 
         private Quaternion SetProjectileRotation()
         {
-            float offsetX = Random.Range(-0.05f, 0.04f);
-            float offsetY = Random.Range(-0.05f, 0.04f);
+            float offsetX = Random.Range(-0.03f, 0.02f);
+            float offsetY = Random.Range(-0.03f, 0.02f);
+
             return Quaternion.LookRotation(characterTransform.forward + new Vector3(offsetX, offsetY), Vector3.up);
         }
     }

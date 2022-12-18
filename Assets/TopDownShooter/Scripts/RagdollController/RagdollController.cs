@@ -8,15 +8,13 @@ namespace TopDownShooter
     public class RagdollController : MonoBehaviour
     {
         [SerializeField] private Animator characterAnimator;
+        [SerializeField] private Transform weapon;
 
         private Rigidbody[] rigidBodies;
 
         private Collider[] colliders;
 
         private CharacterJoint[] joints;
-
-        [SerializeField] private Text myText;
-
 
         private void Awake()
         {
@@ -72,6 +70,5 @@ namespace TopDownShooter
                 rigidBodies[i].AddForce(direction * force, ForceMode.Acceleration);
             }
         }
-
     }
 }
