@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using CharacterControlling;
-using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
 
 namespace TopDownShooter

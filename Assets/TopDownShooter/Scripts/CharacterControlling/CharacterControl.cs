@@ -7,11 +7,12 @@ using TopDownShooter;
 using TopDownShooter.ScriptableObjects;
 using TopDownShooter.CharacterControlling;
 using TopDownShooter.CharacterControlling.Interfaces;
+using Photon.Pun;
 
 
 namespace CharacterControlling
 {
-    public class CharacterControl : MonoBehaviour
+    public class CharacterControl : MonoBehaviourPunCallbacks
     {
         private const float rotationSmoothTime = 0.12f;
         private const float shootRotationSmoothTime = 0.02f;
@@ -46,12 +47,12 @@ namespace CharacterControlling
             shootController.Init(this.transform);
         }
 
-        private void OnEnable()
+        public override void OnEnable()
         {
             playerInput.EnableActionReferences();
             characterHitController.onCharacterDeath += OnDeathProc;
         }
-        private void OnDisable()
+        public override void OnDisable()
         {
             playerInput.DisableActionReferences();
             characterHitController.onCharacterDeath -= OnDeathProc;
