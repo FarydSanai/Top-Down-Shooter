@@ -28,6 +28,11 @@ namespace TopDownShooter.Networking
             
         }
 
+        public void OnInput(NetworkRunner runner, NetworkInput input)
+        {
+            NetworkingPlayer.Local.characterControl.PlayerInput.GetInputData();
+        }
+
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             if (runner.IsServer)
@@ -57,11 +62,6 @@ namespace TopDownShooter.Networking
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
         {
             
-        }
-
-        public void OnInput(NetworkRunner runner, NetworkInput input)
-        {
-
         }
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)

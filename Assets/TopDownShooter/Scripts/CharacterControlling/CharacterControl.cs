@@ -5,11 +5,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TopDownShooter;
 using TopDownShooter.ScriptableObjects;
-using TopDownShooter.CharacterControlling;
 using TopDownShooter.CharacterControlling.Interfaces;
+using Fusion;
+using Fusion.Sockets;
+using TopDownShooter.Networking;
 
-
-namespace CharacterControlling
+namespace TopDownShooter.CharacterControlling
 {
     public class CharacterControl : MonoBehaviour
     {
@@ -18,6 +19,7 @@ namespace CharacterControlling
         private const float rotationApprox = 3.0f;
 
         [SerializeField] private PlayerInputReferences playerInput;
+        public PlayerInputReferences PlayerInput => playerInput;
 
         [Header("Movement options")]
         [SerializeField] private float movementSpeed;
@@ -59,12 +61,20 @@ namespace CharacterControlling
 
         private void Update()
         {
-            CharacterRotate();
+            //Temp
+            if (NetworkingPlayer.Local == this.GetComponent<NetworkingPlayer>())
+            {
+                CharacterRotate();
+            }
         }
 
         private void FixedUpdate()
         {
-            CharacterMove(); 
+            //Temp
+            if (NetworkingPlayer.Local == this.GetComponent<NetworkingPlayer>())
+            {
+                CharacterMove();
+            }
         }
 
         private void CharacterMove()

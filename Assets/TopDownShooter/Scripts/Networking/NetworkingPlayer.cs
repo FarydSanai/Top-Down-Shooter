@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using TopDownShooter.CharacterControlling;
 
 namespace TopDownShooter.Networking
 {
     public class NetworkingPlayer : NetworkBehaviour, IPlayerLeft
     {
         public static NetworkingPlayer Local { get; private set; }
-
+        public CharacterControl characterControl;
 
         private void Start()
         {
@@ -20,6 +21,7 @@ namespace TopDownShooter.Networking
             if (Object.HasInputAuthority)
             {
                 Local = this;
+                characterControl = this.GetComponent<CharacterControl>();
                 Debug.Log("Spawned Local player");
             }
             else
