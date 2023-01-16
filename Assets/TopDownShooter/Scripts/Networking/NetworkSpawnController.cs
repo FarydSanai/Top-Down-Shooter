@@ -10,7 +10,7 @@ namespace TopDownShooter.Networking
     public class NetworkSpawnController : MonoBehaviour, INetworkRunnerCallbacks
     {
         public NetworkingPlayer networkPlayerPrefab;
-        public Transform[] spawnPoints;
+        public Transform[] spawnPoints = new Transform[5];
         private static int spawnCounter = 0;
 
         private void Start()
@@ -30,14 +30,17 @@ namespace TopDownShooter.Networking
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            NetworkingPlayer.Local.characterControl.PlayerInput.GetInputData();
+            if (NetworkingPlayer.Local != null)
+            {
+                input.Set(NetworkingPlayer.Local.characterControl.PlayerInput.GetInputData());
+            }
         }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             if (runner.IsServer)
             {
-                runner.Spawn(networkPlayerPrefab, Vector3.zero, Quaternion.identity, player);
+                runner.Spawn(networkPlayerPrefab, new Vector3(14.32f, 0.2f, 6f), Quaternion.identity, player);
                 spawnCounter++;
             }
 

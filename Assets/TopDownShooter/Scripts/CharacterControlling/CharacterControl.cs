@@ -12,7 +12,7 @@ using TopDownShooter.Networking;
 
 namespace TopDownShooter.CharacterControlling
 {
-    public class CharacterControl : MonoBehaviour
+    public class CharacterControl : NetworkBehaviour
     {
         private const float rotationSmoothTime = 0.12f;
         private const float shootRotationSmoothTime = 0.02f;
@@ -77,12 +77,32 @@ namespace TopDownShooter.CharacterControlling
             }
         }
 
+        public override void FixedUpdateNetwork()
+        {
+            if (GetInput(out NetworkInputData networkInputData))
+            {
+                rigidBody.velocity = new Vector3(networkInputData.movementInput.x,
+                                                 0f,
+                                                 networkInputData.movementInput.y) * movementSpeed;
+
+                characterStateController.UpdateState(CharacterState.Move, playerInput.IsMove);
+
+                if (playerInput.IsMove)
+                {
+                    CharacterRotate(new Vector2(networkInputData.movementInput.x, networkInputData.movementInput.y), rotationSmoothTime);
+                }
+            }
+        }
+
         private void CharacterMove()
         {
-            rigidBody.velocity = new Vector3(playerInput.MoveDir.x, 0, playerInput.MoveDir.y)
-                        * movementSpeed;
+            if (playerInput.IsMove)
+            {
+                rigidBody.velocity = new Vector3(playerInput.MoveDir.x, 0f, playerInput.MoveDir.y)
+                                        * movementSpeed;
 
-            characterStateController.UpdateState(CharacterState.Move, playerInput.IsMove);
+                characterStateController.UpdateState(CharacterState.Move, playerInput.IsMove);
+            }
         }
 
         private void CharacterRotate()

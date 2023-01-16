@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b263079afc90d409d8171068756e43ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   playerInput: {fileID: 11400000, guid: 47fcc4f72b52d4e4d8d5a8725bb53b4d, type: 2}
   movementSpeed: 10
   rotationSpeed: 35
@@ -180,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  characterControl: {fileID: 0}
 --- !u!114 &974763061519013151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +204,7 @@ MonoBehaviour:
     RawGuidValue: ad696e193bac241489c2e8b76307adba
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 2080882467488613159}
   - {fileID: 8110412506042399839}
   SimulationBehaviours: []
 --- !u!1 &2872043785586760653
