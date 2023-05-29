@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Specialized;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using TopDownShooter;
 using TopDownShooter.ScriptableObjects;
 using TopDownShooter.CharacterControlling.Interfaces;
 using Fusion;
-using Fusion.Sockets;
 using TopDownShooter.Networking;
 
 namespace TopDownShooter.CharacterControlling
